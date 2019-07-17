@@ -2,6 +2,17 @@ package com.vitor.moviesapp.model
 
 import com.google.gson.annotations.SerializedName
 
+data class SearchApiResponse(
+    @SerializedName("page")
+    val page: Int,
+    @SerializedName("total_results")
+    val totalResults: Int,
+    @SerializedName("total_pages")
+    val totalPages: Int,
+    @SerializedName("results")
+    val results: List<Movie>
+)
+
 data class Movie(
     @SerializedName("id")
     val id: Long,
