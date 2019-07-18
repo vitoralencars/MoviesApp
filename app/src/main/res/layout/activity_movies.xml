@@ -1,9 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
+<com.sothree.slidinguppanel.SlidingUpPanelLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/panel_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/ebony"
+        android:gravity="bottom"
+        app:umanoAnchorPoint=".9"
+        app:umanoPanelHeight="0dp"
+        app:umanoDragView="@layout/view_movie_details"
+        app:umanoInitialState="hidden">
 
-    <include layout="@layout/content_movies"/>
+    <android.support.constraint.ConstraintLayout android:layout_width="match_parent"
+                                                 android:layout_height="match_parent">
 
-</android.support.constraint.ConstraintLayout>
+        <include layout="@layout/content_movies"/>
+
+    </android.support.constraint.ConstraintLayout>
+
+
+</com.sothree.slidinguppanel.SlidingUpPanelLayout>

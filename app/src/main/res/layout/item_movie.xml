@@ -1,22 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
                                              xmlns:app="http://schemas.android.com/apk/res-auto"
+                                             xmlns:tools="http://schemas.android.com/tools"
                                              android:layout_width="match_parent"
                                              android:layout_height="wrap_content"
                                              android:layout_margin="14dp"
-android:background="#FFFFFF">
+                                             android:clickable="true"
+                                             android:focusable="true"
+                                             android:foreground="?android:attr/selectableItemBackground"
+                                             android:background="@color/ebony">
 
 
     <android.support.v7.widget.AppCompatImageView
             android:id="@+id/iv_banner"
             android:layout_width="0dp"
-            android:layout_height="wrap_content" app:srcCompat="@mipmap/ic_launcher"
+            android:layout_height="220dp" app:srcCompat="@mipmap/ic_launcher"
             android:scaleType="fitXY"
-            android:layout_marginBottom="100dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"/>
-    <TextView
+            app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toTopOf="parent"/>
+    <android.support.v7.widget.AppCompatTextView
             android:id="@+id/tv_movie_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -25,25 +27,57 @@ android:background="#FFFFFF">
             android:textSize="12sp"
             android:textStyle="bold"
             android:textAlignment="center"
+            android:lines="2"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toBottomOf="@+id/iv_banner"
-            android:layout_marginTop="8dp"/>
-    <RatingBar
+            android:layout_marginTop="8dp" android:layout_marginEnd="4dp" android:layout_marginStart="4dp"/>
+    <android.support.v7.widget.AppCompatRatingBar
             style="?android:attr/ratingBarStyleSmall"
             android:id="@+id/rating_bar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:numStars="5"
-            app:layout_constraintTop_toBottomOf="@+id/tv_movie_title" app:layout_constraintStart_toStartOf="parent"/>
+            android:stepSize=".1"
+            android:rating="3"
+            android:secondaryProgressTint="#00000000"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintTop_toBottomOf="@+id/tv_movie_title" app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintHorizontal_bias="0.5" app:layout_constraintEnd_toStartOf="@+id/tv_vote_count"
+            android:layout_marginTop="8dp" android:layout_marginEnd="2dp" android:layout_marginStart="4dp"/>
 
-    <TextView
+    <android.support.v7.widget.AppCompatTextView
             android:id="@+id/tv_vote_count"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/white"
             android:text="(450)"
+            android:textSize="10sp"
             app:layout_constraintTop_toBottomOf="@+id/tv_movie_title"
-            app:layout_constraintStart_toEndOf="@+id/rating_bar"
-            app:layout_constraintBottom_toBottomOf="@+id/rating_bar" android:layout_marginStart="8dp"/>
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/rating_bar" app:layout_constraintHorizontal_bias="0.5"
+            android:layout_marginTop="8dp" android:layout_marginStart="2dp" android:layout_marginEnd="4dp"/>
+
+    <android.support.v7.widget.AppCompatImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" app:srcCompat="@drawable/ic_favorite_unchecked"
+            android:id="@+id/iv_favorite"
+            android:padding="8dp"
+            app:layout_constraintHorizontal_chainStyle="spread_inside"
+            app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/rating_bar"
+            app:layout_constraintHorizontal_bias="0.5" app:layout_constraintEnd_toStartOf="@+id/tv_adult_warning"/>
+
+    <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/tv_adult_warning"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="+18"
+            android:textColor="@color/lightRed"
+            android:textSize="14sp"
+            android:visibility="invisible"
+            app:layout_constraintTop_toBottomOf="@+id/rating_bar" app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" android:layout_marginEnd="8dp"
+            android:layout_marginTop="8dp" android:layout_marginBottom="8dp"
+            app:layout_constraintStart_toEndOf="@+id/iv_favorite" app:layout_constraintHorizontal_bias="0.5"/>
 
 </android.support.constraint.ConstraintLayout>
