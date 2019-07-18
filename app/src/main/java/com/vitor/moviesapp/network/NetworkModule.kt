@@ -15,7 +15,8 @@ object NetworkModule {
         single { gson }
         single { client }
         single { retrofit }
-        single { networkService }
+        single { discoverService }
+        single { genreService }
     }
 
     private val gson: Gson = GsonBuilder().create()
@@ -29,5 +30,6 @@ object NetworkModule {
         .client(client)
         .build()
 
-    private val networkService: NetworkService = retrofit.create(NetworkService::class.java)
+    private val discoverService: DiscoverService = retrofit.create(DiscoverService::class.java)
+    private val genreService: GenreService = retrofit.create(GenreService::class.java)
 }

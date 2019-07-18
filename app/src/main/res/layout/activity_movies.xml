@@ -5,19 +5,23 @@
         android:id="@+id/panel_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/ebony"
+        android:background="@color/black"
         android:gravity="bottom"
         app:umanoAnchorPoint=".9"
         app:umanoPanelHeight="0dp"
         app:umanoDragView="@layout/view_movie_details"
         app:umanoInitialState="hidden">
 
-    <android.support.constraint.ConstraintLayout android:layout_width="match_parent"
-                                                 android:layout_height="match_parent">
+    <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
         <include layout="@layout/content_movies"/>
 
+        <include layout="@layout/progress_bar"/>
+
     </android.support.constraint.ConstraintLayout>
 
+    <include layout="@layout/view_movie_details"/>
 
 </com.sothree.slidinguppanel.SlidingUpPanelLayout>

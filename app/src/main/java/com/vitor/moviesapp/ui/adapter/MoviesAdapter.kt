@@ -33,17 +33,18 @@ class MoviesAdapter(private val context: MoviesActivity)
     inner class ViewHolder(view: View): RecyclerView.ViewHolder(view), View.OnClickListener{
         fun bind(movie: Movie){
             with(itemView){
-                tv_movie_title.text = movie.title
-                iv_banner.loadImage(NetworkConstants.BASE_POSTER_URL + movie.posterPath)
-                rating_bar.rating = movie.voteAverage/2
-                tv_vote_count.text = "(${movie.voteCount})"
+                tv_title_list.text = movie.title
+                iv_poster_list.loadImage(NetworkConstants.BASE_POSTER_URL + movie.posterPath)
+                rating_bar_list.rating = movie.voteAverage/2
+                tv_vote_count_list.text = "(${movie.voteCount})"
+                tv_adult_warning.visibility = if(movie.adult) View.VISIBLE else View.INVISIBLE
             }
 
             itemView.setOnClickListener(this)
         }
 
-        override fun onClick(p0: View?) {
-
+        override fun onClick(view: View?) {
+            context.onItemClick(adapterPosition)
         }
 
     }

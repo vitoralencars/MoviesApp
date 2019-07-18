@@ -27,7 +27,7 @@ data class Movie(
     @SerializedName("adult")
     val adult: Boolean,
     @SerializedName("genre_ids")
-    val genreIds: List<Int>,
+    val genreIds: List<Long>,
     @SerializedName("overview")
     val overview: String,
     @SerializedName("release_date")

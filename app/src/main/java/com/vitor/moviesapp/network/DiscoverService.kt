@@ -6,9 +6,9 @@ import io.reactivex.Observable
 import retrofit2.http.GET
 import retrofit2.http.Query
 
-interface NetworkService {
+interface DiscoverService {
 
-    @GET("movie")
+    @GET(NetworkConstants.DISCOVER_ENDPOINT)
     fun getMovies(
         @Query(NetworkConstants.API_KEY_VALUE) apiKey: String,
         @Query(NetworkConstants.PAGE_VALUE) page: Int,
