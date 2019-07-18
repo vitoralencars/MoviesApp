@@ -1,6 +1,11 @@
 package com.vitor.moviesapp.ui
 
+import android.graphics.PorterDuff
 import android.os.Bundle
+import android.support.v4.content.ContextCompat
+import android.view.View
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import com.sothree.slidinguppanel.SlidingUpPanelLayout
 import com.vitor.moviesapp.R
 import com.vitor.moviesapp.base.BaseActivity
@@ -9,9 +14,7 @@ import com.vitor.moviesapp.network.DiscoverService
 import com.vitor.moviesapp.network.GenreService
 import com.vitor.moviesapp.ui.adapter.GenresAdapter
 import com.vitor.moviesapp.ui.adapter.MoviesAdapter
-import com.vitor.moviesapp.util.NetworkConstants
-import com.vitor.moviesapp.util.RecyclerViewOnClickListener
-import com.vitor.moviesapp.util.loadImage
+import com.vitor.moviesapp.util.*
 import kotlinx.android.synthetic.main.activity_movies.*
 import kotlinx.android.synthetic.main.content_movies.*
 import kotlinx.android.synthetic.main.view_movie_details.*
@@ -29,11 +32,26 @@ class MoviesActivity : BaseActivity(), MoviesContract.View, RecyclerViewOnClickL
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setLayoutReference(R.layout.activity_movies)
+        setUpSortSpinner()
         setUpRecyclerView()
         setUpPresenter()
 
-        presenter.getMovies()
+        presenter.getMovies(SortUtils.SORT_BY_POPULARITY, 1)
         presenter.getGenres()
+    }
+
+    private fun setUpSortSpinner(){
+        val adapter = ArrayAdapter(
+            this,
+            R.layout.spinner_sort_item,
+            resources.getStringArray(R.array.movies_sort_by_options)
+        )
+        spinner_sort.background.setColorFilter(ContextCompat.getColor(
+            this, R.color.lightRed),
+            PorterDuff.Mode.SRC_ATOP
+        )
+        spinner_sort.adapter = adapter
+        spinner_sort.onItemSelectedListener = setUpSpinnerItemSelectedListener()
     }
 
     private fun setUpRecyclerView(){
@@ -51,10 +69,15 @@ class MoviesActivity : BaseActivity(), MoviesContract.View, RecyclerViewOnClickL
         tv_title_details.text = movie.title
         tv_overview.text = movie.overview
         rating_bar_details.rating = movie.voteAverage/2
-        tv_vote_count_details.text = "(${movie.voteCount})"
+        tv_vote_count_details.text = getString(R.string.movie_item_count_indicator, movie.voteCount.toString())
         rv_genrers.adapter = GenresAdapter(this, presenter.getMovieGenres(movie))
 
         panel_layout.panelState = SlidingUpPanelLayout.PanelState.ANCHORED
+    }
+
+    override fun clearMoviesArray() {
+        moviesList.clear()
+        moviesAdapter.updateList(moviesList)
     }
 
     override fun listMovies(movies: List<Movie>) {
@@ -64,5 +87,18 @@ class MoviesActivity : BaseActivity(), MoviesContract.View, RecyclerViewOnClickL
 
     override fun onItemClick(position: Int) {
         showMovieDetails(moviesList[position])
+    }
+
+    private fun setUpSpinnerItemSelectedListener(): AdapterView.OnItemSelectedListener{
+        return object : AdapterView.OnItemSelectedListener{
+            override fun onNothingSelected(p0: AdapterView<*>?) {
+
+            }
+
+            override fun onItemSelected(p0: AdapterView<*>?, p1: View?, position: Int, p3: Long) {
+                presenter.sortMovies(position)
+            }
+
+        }
     }
 }

@@ -10,8 +10,10 @@ object NetworkConstants{
     const val BASE_POSTER_URL = "http://image.tmdb.org/t/p/w500/"
 
     const val API_KEY_VALUE = "api_key"
+    const val SORT_BY_VALUE = "sort_by"
     const val LANGUAGE_VALUE = "language"
     const val ADULT_VALUE = "include_adult"
     const val PAGE_VALUE = "page"
+    const val MINIMUM_VOTES_VALUE = "vote_count.gte"
 
 }

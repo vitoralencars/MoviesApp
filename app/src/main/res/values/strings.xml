@@ -1,3 +1,16 @@
 <resources>
     <string name="app_name">MoviesApp</string>
+
+    <!--MOVIES LIST-->
+    <string name="movies_sort_by_indicator">Ordenar por</string>
+    <string-array name="movies_sort_by_options">
+        <item>Popularidade</item>
+        <item>Lançamento</item>
+        <item>Nota média</item>
+        <item>Votos</item>
+    </string-array>
+
+    <!--MOVIE ITEM-->
+    <string name="movie_item_count_indicator">(%s)</string>
+
 </resources>

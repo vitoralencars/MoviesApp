@@ -11,8 +11,11 @@ interface DiscoverService {
     @GET(NetworkConstants.DISCOVER_ENDPOINT)
     fun getMovies(
         @Query(NetworkConstants.API_KEY_VALUE) apiKey: String,
+        @Query(NetworkConstants.SORT_BY_VALUE) sortBy: String,
         @Query(NetworkConstants.PAGE_VALUE) page: Int,
-        @Query(NetworkConstants.LANGUAGE_VALUE) language: String
+        @Query(NetworkConstants.LANGUAGE_VALUE) language: String,
+        @Query(NetworkConstants.ADULT_VALUE) adult: Boolean,
+        @Query(NetworkConstants.MINIMUM_VOTES_VALUE) minimumVotes: Int
     ): Observable<SearchApiResponse>
 
 }

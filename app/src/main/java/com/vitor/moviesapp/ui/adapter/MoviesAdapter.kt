@@ -36,7 +36,10 @@ class MoviesAdapter(private val context: MoviesActivity)
                 tv_title_list.text = movie.title
                 iv_poster_list.loadImage(NetworkConstants.BASE_POSTER_URL + movie.posterPath)
                 rating_bar_list.rating = movie.voteAverage/2
-                tv_vote_count_list.text = "(${movie.voteCount})"
+                tv_vote_count_list.text = context.getString(
+                    R.string.movie_item_count_indicator,
+                    movie.voteCount.toString()
+                )
                 tv_adult_warning.visibility = if(movie.adult) View.VISIBLE else View.INVISIBLE
             }
 

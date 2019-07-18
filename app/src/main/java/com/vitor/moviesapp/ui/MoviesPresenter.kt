@@ -5,9 +5,7 @@ import com.vitor.moviesapp.model.Genre
 import com.vitor.moviesapp.model.Movie
 import com.vitor.moviesapp.network.DiscoverService
 import com.vitor.moviesapp.network.GenreService
-import com.vitor.moviesapp.util.GenreUtils
-import com.vitor.moviesapp.util.LanguageConstants
-import com.vitor.moviesapp.util.NetworkConstants
+import com.vitor.moviesapp.util.*
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
@@ -27,9 +25,18 @@ class MoviesPresenter: MoviesContract.Presenter {
         this.genreService = genreService
     }
 
-    override fun getMovies() {
-        view.showProgressBar()
-        discoverService.getMovies(NetworkConstants.API_KEY, 1, LanguageConstants.PT_BR)
+    override fun getMovies(sortBy: String, page: Int) {
+        if(page == 1){
+            view.clearMoviesArray()
+            view.showProgressBar()
+        }
+        discoverService.getMovies(
+            NetworkConstants.API_KEY,
+            sortBy,
+            page,
+            LanguageConstants.PT_BR,
+            true,
+            500)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
@@ -61,5 +68,18 @@ class MoviesPresenter: MoviesContract.Presenter {
         }
 
         return genresList
+    }
+
+    override fun sortMovies(spinnerIndex: Int) {
+
+        val sortByOption = when(spinnerIndex){
+            SortUtils.SortByEnum.POPULARITY.ordinal -> SortUtils.SORT_BY_POPULARITY
+            SortUtils.SortByEnum.RELEASE_DATE.ordinal -> SortUtils.SORT_BY_RELEASE_DATE
+            SortUtils.SortByEnum.AVERAGE.ordinal -> SortUtils.SORT_BY_AVERAGE
+            SortUtils.SortByEnum.VOTE_COUNT.ordinal -> SortUtils.SORT_BY_VOTE_COUNT
+            else -> SortUtils.SORT_BY_POPULARITY
+        }
+
+        getMovies(sortByOption, 1)
     }
 }
