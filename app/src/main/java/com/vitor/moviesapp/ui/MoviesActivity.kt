@@ -26,7 +26,8 @@ class MoviesActivity : BaseActivity(), MoviesContract.View, RecyclerViewOnClickL
     private val discoverService: DiscoverService by inject()
     private val genreService: GenreService by inject()
 
-    private val moviesList = ArrayList<Movie>()
+    private val remoteMoviesList = ArrayList<Movie>()
+    private val favoriteMoviesList = ArrayList<Movie>()
     private lateinit var moviesAdapter: MoviesAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,7 +37,8 @@ class MoviesActivity : BaseActivity(), MoviesContract.View, RecyclerViewOnClickL
         setUpRecyclerView()
         setUpPresenter()
 
-        presenter.getMovies(SortUtils.SORT_BY_POPULARITY, 1)
+        presenter.getRemoteMovies(SortUtils.SORT_BY_POPULARITY, 1)
+        presenter.getFavoriteMovies()
         presenter.getGenres()
     }
 
@@ -83,18 +85,23 @@ class MoviesActivity : BaseActivity(), MoviesContract.View, RecyclerViewOnClickL
         panel_layout.panelState = SlidingUpPanelLayout.PanelState.ANCHORED
     }
 
-    override fun clearMoviesArray() {
-        moviesList.clear()
-        moviesAdapter.updateList(moviesList)
+    override fun clearRemoteMoviesArray() {
+        remoteMoviesList.clear()
+        moviesAdapter.updateList(remoteMoviesList, favoriteMoviesList)
     }
 
-    override fun listMovies(movies: List<Movie>) {
-        moviesList.addAll(movies)
-        moviesAdapter.updateList(movies)
+    override fun listRemoteMovies(movies: List<Movie>) {
+        remoteMoviesList.addAll(movies)
+        moviesAdapter.updateList(movies, favoriteMoviesList)
+    }
+
+    override fun updateFavoriteMoviesList(movies: List<Movie>) {
+        favoriteMoviesList.addAll(movies)
+        moviesAdapter.updateList(remoteMoviesList, favoriteMoviesList)
     }
 
     override fun onItemClick(position: Int) {
-        showMovieDetails(moviesList[position])
+        showMovieDetails(remoteMoviesList[position])
     }
 
     private fun setUpSpinnerItemSelectedListener(): AdapterView.OnItemSelectedListener{

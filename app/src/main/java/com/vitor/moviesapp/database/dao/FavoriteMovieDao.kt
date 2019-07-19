@@ -6,14 +6,13 @@ import android.arch.persistence.room.Insert
 import android.arch.persistence.room.Query
 import com.vitor.moviesapp.model.Movie
 import com.vitor.moviesapp.util.DataBaseConstants
-import io.reactivex.Flowable
 import io.reactivex.Single
 
 @Dao
 interface FavoriteMovieDao {
 
     @Query(DataBaseConstants.SELECT_FAVORITES_MOVIES_QUERY)
-    fun getFavoriteMovies(): Flowable<List<Movie>>
+    fun getFavoriteMovies(): Single<List<Movie>>
 
     @Query(DataBaseConstants.SELECT_FAVORITES_MOVIES_QUERY + " WHERE id = :movieId")
     fun getFavoriteMovieById(movieId: Long): Single<Movie>

@@ -34,9 +34,9 @@ class MoviesPresenter: MoviesContract.Presenter {
         this.dataBase = dataBase
     }
 
-    override fun getMovies(sortBy: String, page: Int) {
+    override fun getRemoteMovies(sortBy: String, page: Int) {
         if(page == 1){
-            view.clearMoviesArray()
+            view.clearRemoteMoviesArray()
             view.showProgressBar()
         }
         discoverService.getMovies(
@@ -49,10 +49,21 @@ class MoviesPresenter: MoviesContract.Presenter {
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
-                view.listMovies(it.results)
+                view.listRemoteMovies(it.results)
                 view.hideProgressBar()
             },{
                 view.hideProgressBar()
+            })
+    }
+
+    override fun getFavoriteMovies() {
+        dataBase.favoriteMovieDao().getFavoriteMovies()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe ({
+                view.updateFavoriteMoviesList(it)
+            },{
+
             })
     }
 
@@ -89,7 +100,7 @@ class MoviesPresenter: MoviesContract.Presenter {
             else -> SortUtils.SORT_BY_POPULARITY
         }
 
-        getMovies(sortByOption, 1)
+        getRemoteMovies(sortByOption, 1)
     }
 
     override fun setFavoriteMovieAction(movie: Movie, favoriteIcon: AppCompatImageView) {
