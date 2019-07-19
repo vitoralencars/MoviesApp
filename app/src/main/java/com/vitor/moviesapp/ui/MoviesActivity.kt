@@ -62,15 +62,23 @@ class MoviesActivity : BaseActivity(), MoviesContract.View, RecyclerViewOnClickL
     private fun setUpPresenter(){
         presenter.attachView(this)
         presenter.attachServices(discoverService, genreService)
+        presenter.attachDataBase(database)
     }
 
     private fun showMovieDetails(movie: Movie){
+        presenter.checkIsFavoriteMovie(movie, iv_favorite_details)
+
         iv_poster_details.loadImage(NetworkConstants.BASE_POSTER_URL + movie.posterPath)
         tv_title_details.text = movie.title
         tv_overview.text = movie.overview
         rating_bar_details.rating = movie.voteAverage/2
-        tv_vote_count_details.text = getString(R.string.movie_item_count_indicator, movie.voteCount.toString())
-        rv_genrers.adapter = GenresAdapter(this, presenter.getMovieGenres(movie))
+        tv_vote_count_details.text = getString(R.string.parentheses_style, movie.voteCount.toString())
+        rv_genrers_details.adapter = GenresAdapter(this, presenter.getMovieGenres(movie))
+        tv_release_date_details.text = getString(R.string.parentheses_style, DateUtils.getYear(movie.releaseDate))
+
+        iv_favorite_details.setOnClickListener{
+            presenter.setFavoriteMovieAction(movie, iv_favorite_details)
+        }
 
         panel_layout.panelState = SlidingUpPanelLayout.PanelState.ANCHORED
     }

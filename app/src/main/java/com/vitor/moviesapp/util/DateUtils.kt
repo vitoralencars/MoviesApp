@@ -1,12 +1,18 @@
 package com.vitor.moviesapp.util
 
 import android.annotation.SuppressLint
-import android.widget.TextView
 import java.text.SimpleDateFormat
 
 @SuppressLint("SimpleDateFormat")
-fun TextView.formatDate_ddMMyyyy(date: String){
-    val format = SimpleDateFormat("dd/MM/yyyy")
-    val date = format.parse(date)
-    this.text = format.format(date)
+class DateUtils {
+
+    companion object {
+        fun getYear(date: String): String{
+            val currentDateFormat = SimpleDateFormat("yyyy-MM-dd")
+            val dateFormat = SimpleDateFormat("yyyy")
+            val dateObject = currentDateFormat.parse(date)
+            return dateFormat.format(dateObject)
+        }
+    }
+
 }

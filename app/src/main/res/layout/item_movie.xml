@@ -20,7 +20,7 @@
             app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toTopOf="parent"/>
     <android.support.v7.widget.AppCompatTextView
             android:id="@+id/tv_title_list"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="Nome do filme"
             android:textColor="@color/white"
@@ -61,24 +61,24 @@
     <android.support.v7.widget.AppCompatImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" app:srcCompat="@drawable/ic_favorite_unchecked"
-            android:id="@+id/iv_favorite"
+            android:id="@+id/iv_favorite_list"
             android:padding="8dp"
             app:layout_constraintHorizontal_chainStyle="spread_inside"
             app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/rating_bar_list"
-            app:layout_constraintHorizontal_bias="0.5" app:layout_constraintEnd_toStartOf="@+id/tv_adult_warning"/>
+            app:layout_constraintHorizontal_bias="0.5" app:layout_constraintEnd_toStartOf="@+id/tv_adult_warning_list"/>
 
     <android.support.v7.widget.AppCompatTextView
-            android:id="@+id/tv_adult_warning"
+            android:id="@+id/tv_adult_warning_list"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="+18"
+            android:text="@string/movies_commom_adult_warning"
             android:textColor="@color/lightRed"
             android:textSize="@dimen/font_normal"
             android:visibility="invisible"
             app:layout_constraintTop_toBottomOf="@+id/rating_bar_list" app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent" android:layout_marginEnd="8dp"
             android:layout_marginTop="8dp" android:layout_marginBottom="8dp"
-            app:layout_constraintStart_toEndOf="@+id/iv_favorite" app:layout_constraintHorizontal_bias="0.5"/>
+            app:layout_constraintStart_toEndOf="@+id/iv_favorite_list" app:layout_constraintHorizontal_bias="0.5"/>
 
 </android.support.constraint.ConstraintLayout>

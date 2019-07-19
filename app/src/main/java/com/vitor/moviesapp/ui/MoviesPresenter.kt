@@ -1,6 +1,8 @@
 package com.vitor.moviesapp.ui
 
 import android.annotation.SuppressLint
+import android.support.v7.widget.AppCompatImageView
+import com.vitor.moviesapp.database.AppDataBase
 import com.vitor.moviesapp.model.Genre
 import com.vitor.moviesapp.model.Movie
 import com.vitor.moviesapp.network.DiscoverService
@@ -13,8 +15,11 @@ import io.reactivex.schedulers.Schedulers
 class MoviesPresenter: MoviesContract.Presenter {
 
     lateinit var view: MoviesContract.View
+
     lateinit var discoverService: DiscoverService
     lateinit var genreService: GenreService
+
+    lateinit var dataBase: AppDataBase
 
     override fun attachView(view: MoviesContract.View) {
         this.view = view
@@ -23,6 +28,10 @@ class MoviesPresenter: MoviesContract.Presenter {
     override fun attachServices(discoverService: DiscoverService, genreService: GenreService) {
         this.discoverService = discoverService
         this.genreService = genreService
+    }
+
+    override fun attachDataBase(dataBase: AppDataBase) {
+        this.dataBase = dataBase
     }
 
     override fun getMovies(sortBy: String, page: Int) {
@@ -62,9 +71,9 @@ class MoviesPresenter: MoviesContract.Presenter {
         val genresList = ArrayList<Genre>()
 
         GenreUtils.genrers.forEach{
-            if(movie.genreIds.contains(it.id)){
+            /*if(movie.genreIds.contains(it.id)){
                 genresList.add(it)
-            }
+            }*/
         }
 
         return genresList
@@ -82,4 +91,29 @@ class MoviesPresenter: MoviesContract.Presenter {
 
         getMovies(sortByOption, 1)
     }
+
+    override fun setFavoriteMovieAction(movie: Movie, favoriteIcon: AppCompatImageView) {
+        dataBase.favoriteMovieDao().getFavoriteMovieById(movie.id)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({
+                view.removeFavoriteMovie(movie)
+                view.unCheckFavoriteIcon(favoriteIcon)
+            },{
+                view.insertFavoriteMovie(movie)
+                view.checkFavoriteIcon(favoriteIcon)
+            })
+    }
+
+    override fun checkIsFavoriteMovie(movie: Movie, favoriteIcon: AppCompatImageView) {
+        dataBase.favoriteMovieDao().getFavoriteMovieById(movie.id)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({
+                view.checkFavoriteIcon(favoriteIcon)
+            },{
+                view.unCheckFavoriteIcon(favoriteIcon)
+            })
+    }
+
 }

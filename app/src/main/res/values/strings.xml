@@ -1,6 +1,12 @@
 <resources>
     <string name="app_name">MoviesApp</string>
 
+    <!--UTIL-->
+    <string name="parentheses_style">(%s)</string>
+    
+    <!--MOVIES COMMON-->
+    <string name="movies_commom_adult_warning">+18</string>
+
     <!--MOVIES LIST-->
     <string name="movies_sort_by_indicator">Ordenar por</string>
     <string-array name="movies_sort_by_options">
@@ -9,8 +15,5 @@
         <item>Nota média</item>
         <item>Votos</item>
     </string-array>
-
-    <!--MOVIE ITEM-->
-    <string name="movie_item_count_indicator">(%s)</string>
 
 </resources>

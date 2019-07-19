@@ -1,6 +1,9 @@
 package com.vitor.moviesapp.model
 
+import android.arch.persistence.room.Entity
+import android.arch.persistence.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
+import com.vitor.moviesapp.util.DataBaseConstants
 
 data class SearchApiResponse(
     @SerializedName("page")
@@ -13,7 +16,9 @@ data class SearchApiResponse(
     val results: List<Movie>
 )
 
+@Entity(tableName = DataBaseConstants.MOVIE_TABLE_NAME)
 data class Movie(
+    @PrimaryKey
     @SerializedName("id")
     val id: Long,
     @SerializedName("vote_count")
@@ -26,8 +31,8 @@ data class Movie(
     val posterPath: String,
     @SerializedName("adult")
     val adult: Boolean,
-    @SerializedName("genre_ids")
-    val genreIds: List<Long>,
+    //@SerializedName("genre_ids")
+    //val genreIds: List<Long>,
     @SerializedName("overview")
     val overview: String,
     @SerializedName("release_date")
