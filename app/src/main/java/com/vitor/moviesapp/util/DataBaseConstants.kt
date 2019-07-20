@@ -2,7 +2,7 @@ package com.vitor.moviesapp.util
 
 object DataBaseConstants {
 
-    const val DATABASE_NAME = "MoviesApp-DB"
+    const val DATABASE_NAME = "MoviesAppDB"
 
     const val MOVIE_TABLE_NAME = "Movie"
 

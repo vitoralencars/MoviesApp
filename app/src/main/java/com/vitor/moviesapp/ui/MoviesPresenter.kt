@@ -3,6 +3,7 @@ package com.vitor.moviesapp.ui
 import android.annotation.SuppressLint
 import android.support.v7.widget.AppCompatImageView
 import com.vitor.moviesapp.database.AppDataBase
+import com.vitor.moviesapp.database.FavoriteMoviesObject
 import com.vitor.moviesapp.model.Genre
 import com.vitor.moviesapp.model.Movie
 import com.vitor.moviesapp.network.DiscoverService
@@ -13,7 +14,6 @@ import io.reactivex.schedulers.Schedulers
 
 @SuppressLint("CheckResult")
 class MoviesPresenter: MoviesContract.Presenter {
-
     lateinit var view: MoviesContract.View
 
     lateinit var discoverService: DiscoverService
@@ -34,26 +34,30 @@ class MoviesPresenter: MoviesContract.Presenter {
         this.dataBase = dataBase
     }
 
-    override fun getRemoteMovies(sortBy: String, page: Int) {
-        if(page == 1){
-            view.clearRemoteMoviesArray()
-            view.showProgressBar()
+    override fun getRemoteMovies() {
+        if(PageObject.hasMorePages()) {
+            if (PageObject.currentPage == 1) {
+                view.clearRemoteMoviesArray()
+                view.showProgressBar()
+            }
+            discoverService.getMovies(
+                NetworkConstants.API_KEY,
+                SortObject.currentSortOrder,
+                PageObject.currentPage,
+                LanguageConstants.PT_BR,
+                true,
+                500
+            )
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({
+                    PageObject.maxPages = it.totalPages
+                    view.listRemoteMovies(it.results)
+                    view.hideProgressBar()
+                }, {
+                    view.hideProgressBar()
+                })
         }
-        discoverService.getMovies(
-            NetworkConstants.API_KEY,
-            sortBy,
-            page,
-            LanguageConstants.PT_BR,
-            true,
-            500)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({
-                view.listRemoteMovies(it.results)
-                view.hideProgressBar()
-            },{
-                view.hideProgressBar()
-            })
     }
 
     override fun getFavoriteMovies() {
@@ -61,7 +65,8 @@ class MoviesPresenter: MoviesContract.Presenter {
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe ({
-                view.updateFavoriteMoviesList(it)
+                FavoriteMoviesObject.updateMoviesList(it)
+                view.reloadMoviesList()
             },{
 
             })
@@ -78,29 +83,31 @@ class MoviesPresenter: MoviesContract.Presenter {
             })
     }
 
-    override fun getMovieGenres(movie: Movie): List<Genre>{
+    override fun getMovieGenres(movie: Movie): ArrayList<Genre>{
         val genresList = ArrayList<Genre>()
 
         GenreUtils.genrers.forEach{
-            /*if(movie.genreIds.contains(it.id)){
+            if(it.id in movie.genreIds){
                 genresList.add(it)
-            }*/
+            }
         }
 
         return genresList
     }
 
     override fun sortMovies(spinnerIndex: Int) {
+        PageObject.resetPage()
 
         val sortByOption = when(spinnerIndex){
-            SortUtils.SortByEnum.POPULARITY.ordinal -> SortUtils.SORT_BY_POPULARITY
-            SortUtils.SortByEnum.RELEASE_DATE.ordinal -> SortUtils.SORT_BY_RELEASE_DATE
-            SortUtils.SortByEnum.AVERAGE.ordinal -> SortUtils.SORT_BY_AVERAGE
-            SortUtils.SortByEnum.VOTE_COUNT.ordinal -> SortUtils.SORT_BY_VOTE_COUNT
-            else -> SortUtils.SORT_BY_POPULARITY
+            SortObject.SortByEnum.POPULARITY.ordinal -> SortObject.SORT_BY_POPULARITY
+            SortObject.SortByEnum.RELEASE_DATE.ordinal -> SortObject.SORT_BY_RELEASE_DATE
+            SortObject.SortByEnum.AVERAGE.ordinal -> SortObject.SORT_BY_AVERAGE
+            SortObject.SortByEnum.VOTE_COUNT.ordinal -> SortObject.SORT_BY_VOTE_COUNT
+            else -> SortObject.SORT_BY_POPULARITY
         }
 
-        getRemoteMovies(sortByOption, 1)
+        SortObject.currentSortOrder = sortByOption
+        getRemoteMovies()
     }
 
     override fun setFavoriteMovieAction(movie: Movie, favoriteIcon: AppCompatImageView) {
@@ -110,9 +117,11 @@ class MoviesPresenter: MoviesContract.Presenter {
             .subscribe({
                 view.removeFavoriteMovie(movie)
                 view.unCheckFavoriteIcon(favoriteIcon)
+                view.reloadMoviesList()
             },{
                 view.insertFavoriteMovie(movie)
                 view.checkFavoriteIcon(favoriteIcon)
+                view.reloadMoviesList()
             })
     }
 
@@ -127,4 +136,10 @@ class MoviesPresenter: MoviesContract.Presenter {
             })
     }
 
+    override fun checkListScroll(canScroll: Boolean) {
+        if(!canScroll){
+            PageObject.setNextPage()
+            getRemoteMovies()
+        }
+    }
 }

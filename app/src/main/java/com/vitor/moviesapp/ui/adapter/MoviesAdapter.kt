@@ -6,20 +6,20 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.vitor.moviesapp.R
+import com.vitor.moviesapp.database.FavoriteMoviesObject
 import com.vitor.moviesapp.model.Movie
 import com.vitor.moviesapp.ui.MoviesActivity
 import com.vitor.moviesapp.util.NetworkConstants
 import com.vitor.moviesapp.util.loadImage
 import kotlinx.android.synthetic.main.item_movie.view.*
 
-class MoviesAdapter(private val context: MoviesActivity)
+class MoviesAdapter(private val activity: MoviesActivity)
     : RecyclerView.Adapter<MoviesAdapter.ViewHolder>() {
 
     private var remoteMovies: List<Movie> = emptyList()
-    private var favoriteMovies: List<Movie> = emptyList()
 
     override fun onCreateViewHolder(p0: ViewGroup, p1: Int): ViewHolder {
-        val view = LayoutInflater.from(context).inflate(R.layout.item_movie, p0, false)
+        val view = LayoutInflater.from(activity).inflate(R.layout.item_movie, p0, false)
         return ViewHolder(view)
     }
 
@@ -27,9 +27,8 @@ class MoviesAdapter(private val context: MoviesActivity)
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) = holder.bind(remoteMovies[position])
 
-    fun updateList(remoteMovies: List<Movie>, favoriteMovies: List<Movie>){
+    fun updateList(remoteMovies: List<Movie>){
         this.remoteMovies = remoteMovies
-        this.favoriteMovies = favoriteMovies
         notifyDataSetChanged()
     }
 
@@ -44,17 +43,21 @@ class MoviesAdapter(private val context: MoviesActivity)
                     movie.voteCount.toString()
                 )
                 tv_adult_warning_list.visibility = if(movie.adult) View.VISIBLE else View.INVISIBLE
-                if(movie in favoriteMovies)
+                if(movie in FavoriteMoviesObject.movies)
                     iv_favorite_list.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_favorite_checked))
                 else
                     iv_favorite_list.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_favorite_unchecked))
+
+                iv_favorite_list.setOnClickListener{
+                    activity.onFavoriteIconClickedListener(movie, iv_favorite_list)
+                }
             }
 
             itemView.setOnClickListener(this)
         }
 
         override fun onClick(view: View?) {
-            context.onItemClick(adapterPosition)
+            activity.onItemClick(adapterPosition)
         }
 
     }

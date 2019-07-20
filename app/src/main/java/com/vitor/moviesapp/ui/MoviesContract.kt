@@ -13,19 +13,20 @@ class MoviesContract: BaseContract() {
     interface View: BaseView{
         fun listRemoteMovies(movies: List<Movie>)
         fun clearRemoteMoviesArray()
-        fun updateFavoriteMoviesList(movies: List<Movie>)
+        fun reloadMoviesList()
     }
 
     interface Presenter: BasePresenter<View>{
         fun attachServices(discoverService: DiscoverService, genreService: GenreService)
         fun attachDataBase(dataBase: AppDataBase)
-        fun getRemoteMovies(sortBy: String, page: Int)
+        fun getRemoteMovies()
         fun getFavoriteMovies()
         fun getGenres()
         fun getMovieGenres(movie: Movie): List<Genre>
         fun sortMovies(spinnerIndex: Int)
         fun setFavoriteMovieAction(movie: Movie, favoriteIcon: AppCompatImageView)
         fun checkIsFavoriteMovie(movie: Movie, favoriteIcon: AppCompatImageView)
+        fun checkListScroll(canScroll: Boolean)
     }
 
 }
