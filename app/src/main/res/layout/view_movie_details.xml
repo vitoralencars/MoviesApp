@@ -39,7 +39,6 @@
             android:layout_marginTop="24dp" android:layout_marginStart="16dp"/>
 
     <android.support.v7.widget.AppCompatTextView
-            android:text="Nome do filme"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:textColor="@color/white"
@@ -61,7 +60,6 @@
             android:textColor="@color/white"
             android:textStyle="bold"
             android:textAlignment="center"
-            android:text="(2019)"
             app:layout_constraintTop_toBottomOf="@+id/tv_title_details"
             app:layout_constraintBottom_toTopOf="@+id/rating_bar_details"
             app:layout_constraintStart_toEndOf="@+id/iv_poster_details" app:layout_constraintEnd_toEndOf="parent"
@@ -75,7 +73,6 @@
             android:layout_height="wrap_content"
             android:numStars="5"
             android:stepSize=".1"
-            android:rating="3"
             android:secondaryProgressTint="#00000000"
             app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintTop_toBottomOf="@+id/tv_release_date_details"
@@ -89,7 +86,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/white"
-            android:text="(450)"
             android:textSize="@dimen/font_tiny"
             app:layout_constraintTop_toBottomOf="@+id/tv_release_date_details"
             app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toEndOf="@+id/rating_bar_details"
@@ -122,7 +118,6 @@
             android:visibility="gone"/>
 
     <android.support.v7.widget.AppCompatTextView
-            android:text="Descrição do filme"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:id="@+id/tv_overview"

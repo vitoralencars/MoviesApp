@@ -8,6 +8,8 @@
     <string name="movies_commom_adult_warning">+18</string>
 
     <!--MOVIES LIST-->
+    <string name="menu_search_title">Pesquisar</string>
+    <string name="menu_favorites_title">Favoritos</string>
     <string name="movies_sort_by_indicator">Ordenar por</string>
     <string-array name="movies_sort_by_options">
         <item>Popularidade</item>

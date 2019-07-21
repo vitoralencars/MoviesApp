@@ -6,18 +6,21 @@ import com.vitor.moviesapp.database.AppDataBase
 import com.vitor.moviesapp.database.FavoriteMoviesObject
 import com.vitor.moviesapp.model.Genre
 import com.vitor.moviesapp.model.Movie
-import com.vitor.moviesapp.network.DiscoverService
-import com.vitor.moviesapp.network.GenreService
+import com.vitor.moviesapp.network.service.DiscoverService
+import com.vitor.moviesapp.network.service.GenreService
+import com.vitor.moviesapp.network.service.SearchService
 import com.vitor.moviesapp.util.*
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
 @SuppressLint("CheckResult")
 class MoviesPresenter: MoviesContract.Presenter {
+
     lateinit var view: MoviesContract.View
 
     lateinit var discoverService: DiscoverService
     lateinit var genreService: GenreService
+    lateinit var searchService: SearchService
 
     lateinit var dataBase: AppDataBase
 
@@ -25,9 +28,10 @@ class MoviesPresenter: MoviesContract.Presenter {
         this.view = view
     }
 
-    override fun attachServices(discoverService: DiscoverService, genreService: GenreService) {
+    override fun attachServices(discoverService: DiscoverService, genreService: GenreService, searchService: SearchService) {
         this.discoverService = discoverService
         this.genreService = genreService
+        this.searchService = searchService
     }
 
     override fun attachDataBase(dataBase: AppDataBase) {
@@ -94,6 +98,39 @@ class MoviesPresenter: MoviesContract.Presenter {
 
         return genresList
     }
+
+    override fun searchMoviesByQuery(query: String) {
+        PageObject.resetPage()
+
+        if(PageObject.hasMorePages()){
+            if (PageObject.currentPage == 1) {
+                view.clearRemoteMoviesArray()
+                view.showProgressBar()
+            }
+            searchService.searchByQuery(
+                NetworkConstants.API_KEY,
+                LanguageConstants.PT_BR, query,
+                PageObject.currentPage,
+                true
+            )
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({
+                    PageObject.maxPages = it.totalPages
+                    view.listRemoteMovies(it.results)
+                    view.hideProgressBar()
+                }, {
+                    view.hideProgressBar()
+                })
+
+        }
+    }
+
+    override fun clearQueryText() {
+        PageObject.resetPage()
+        getRemoteMovies()
+    }
+
 
     override fun sortMovies(spinnerIndex: Int) {
         PageObject.resetPage()

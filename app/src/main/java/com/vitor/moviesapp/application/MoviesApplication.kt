@@ -1,7 +1,7 @@
 package com.vitor.moviesapp.application
 
 import android.app.Application
-import com.vitor.moviesapp.network.NetworkModule
+import com.vitor.moviesapp.network.module.NetworkModule
 import com.vitor.moviesapp.ui.MoviesModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin

@@ -7,6 +7,7 @@ object NetworkConstants{
     const val BASE_URL = "https://api.themoviedb.org/3/"
     const val DISCOVER_ENDPOINT = "discover/movie"
     const val GENRE_ENDPOINT = "genre/movie/list"
+    const val SEARCH_ENDPOINT = "search/multi"
     const val BASE_POSTER_URL = "http://image.tmdb.org/t/p/w500/"
 
     const val API_KEY_VALUE = "api_key"
@@ -15,5 +16,6 @@ object NetworkConstants{
     const val ADULT_VALUE = "include_adult"
     const val PAGE_VALUE = "page"
     const val MINIMUM_VOTES_VALUE = "vote_count.gte"
+    const val QUERY_VALUE = "query"
 
 }

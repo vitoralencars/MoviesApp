@@ -1,4 +1,4 @@
-package com.vitor.moviesapp.network
+package com.vitor.moviesapp.network.service
 
 import com.vitor.moviesapp.model.GenreApiResponse
 import com.vitor.moviesapp.util.NetworkConstants

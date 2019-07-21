@@ -1,7 +1,10 @@
-package com.vitor.moviesapp.network
+package com.vitor.moviesapp.network.module
 
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
+import com.vitor.moviesapp.network.service.DiscoverService
+import com.vitor.moviesapp.network.service.GenreService
+import com.vitor.moviesapp.network.service.SearchService
 import com.vitor.moviesapp.util.NetworkConstants
 import okhttp3.OkHttpClient
 import org.koin.dsl.module
@@ -17,6 +20,7 @@ object NetworkModule {
         single { retrofit }
         single { discoverService }
         single { genreService }
+        single { searchService }
     }
 
     private val gson: Gson = GsonBuilder().create()
@@ -32,4 +36,5 @@ object NetworkModule {
 
     private val discoverService: DiscoverService = retrofit.create(DiscoverService::class.java)
     private val genreService: GenreService = retrofit.create(GenreService::class.java)
+    private val searchService: SearchService = retrofit.create(SearchService::class.java)
 }
