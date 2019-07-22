@@ -41,8 +41,33 @@
             android:layout_height="0dp"
             app:layoutManager="android.support.v7.widget.GridLayoutManager"
             app:spanCount="2"
+            android:visibility="gone"
             app:layout_constraintTop_toBottomOf="@+id/view"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" app:layout_constraintBottom_toBottomOf="parent"/>
+    <android.support.v7.widget.AppCompatTextView
+            android:text="@string/movies_network_unavailable"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/tv_network_unavailable"
+            android:textColor="@color/lightRed"
+            android:textAlignment="center"
+            android:textSize="@dimen/font_normal"
+            app:layout_constraintTop_toBottomOf="@+id/view"
+            app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="16dp" app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="16dp"/>
+
+    <android.support.v7.widget.AppCompatButton style="@style/FillButtonStyle"
+            android:text="@string/movies_button_access_favorite"
+            android:id="@+id/btn_show_favorite"
+            app:layout_constraintTop_toBottomOf="@+id/tv_network_unavailable"
+            app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="8dp"
+            app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp" android:layout_marginTop="16dp"/>
+
+    <android.support.constraint.Group android:layout_width="wrap_content" android:layout_height="wrap_content"
+                                      android:id="@+id/group_network_unavailable"
+                                      android:visibility="gone"
+                                      app:constraint_referenced_ids="btn_show_favorite,tv_network_unavailable"/>
 
 </android.support.constraint.ConstraintLayout>

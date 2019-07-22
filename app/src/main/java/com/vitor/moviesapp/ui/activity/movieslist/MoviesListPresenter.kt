@@ -1,7 +1,9 @@
-package com.vitor.moviesapp.ui
+package com.vitor.moviesapp.ui.activity.movieslist
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.support.v7.widget.AppCompatImageView
+import com.sothree.slidinguppanel.SlidingUpPanelLayout
 import com.vitor.moviesapp.database.AppDataBase
 import com.vitor.moviesapp.database.FavoriteMoviesObject
 import com.vitor.moviesapp.model.Genre
@@ -14,9 +16,9 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
 @SuppressLint("CheckResult")
-class MoviesPresenter: MoviesContract.Presenter {
+class MoviesListPresenter: MoviesListContract.Presenter {
 
-    lateinit var view: MoviesContract.View
+    lateinit var view: MoviesListContract.View
 
     lateinit var discoverService: DiscoverService
     lateinit var genreService: GenreService
@@ -24,7 +26,7 @@ class MoviesPresenter: MoviesContract.Presenter {
 
     lateinit var dataBase: AppDataBase
 
-    override fun attachView(view: MoviesContract.View) {
+    override fun attachView(view: MoviesListContract.View) {
         this.view = view
     }
 
@@ -38,7 +40,7 @@ class MoviesPresenter: MoviesContract.Presenter {
         this.dataBase = dataBase
     }
 
-    override fun getRemoteMovies() {
+    override fun getRemoteMovies(context: Context) {
         if(PageObject.hasMorePages()) {
             if (PageObject.currentPage == 1) {
                 view.clearRemoteMoviesArray()
@@ -50,16 +52,21 @@ class MoviesPresenter: MoviesContract.Presenter {
                 PageObject.currentPage,
                 LanguageConstants.PT_BR,
                 true,
-                500
+                100
             )
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
                     PageObject.maxPages = it.totalPages
+                    view.hideNetworkUnavailableWarning()
                     view.listRemoteMovies(it.results)
                     view.hideProgressBar()
+
+                    setupListActions(it.results.isEmpty())
+
                 }, {
                     view.hideProgressBar()
+                    checkConnectionStatus(context)
                 })
         }
     }
@@ -83,7 +90,7 @@ class MoviesPresenter: MoviesContract.Presenter {
             .subscribe({
                 GenreUtils.genrers = it.genres
             },{
-                print(it)
+
             })
     }
 
@@ -99,7 +106,15 @@ class MoviesPresenter: MoviesContract.Presenter {
         return genresList
     }
 
-    override fun searchMoviesByQuery(query: String) {
+    override fun checkPanelState(movie: Movie, panel: SlidingUpPanelLayout) {
+        if(panel.panelState == SlidingUpPanelLayout.PanelState.COLLAPSED) {
+            view.showMovieDetails(movie)
+        }else {
+            panel.panelState = SlidingUpPanelLayout.PanelState.COLLAPSED
+        }
+    }
+
+    override fun searchMoviesByQuery(context: Context, query: String) {
         PageObject.resetPage()
 
         if(PageObject.hasMorePages()){
@@ -117,22 +132,25 @@ class MoviesPresenter: MoviesContract.Presenter {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
                     PageObject.maxPages = it.totalPages
+                    view.hideNetworkUnavailableWarning()
                     view.listRemoteMovies(it.results)
                     view.hideProgressBar()
+                    setupListActions(it.results.isEmpty())
                 }, {
                     view.hideProgressBar()
+                    checkConnectionStatus(context)
                 })
 
         }
     }
 
-    override fun clearQueryText() {
+    override fun clearQueryText(context: Context) {
         PageObject.resetPage()
-        getRemoteMovies()
+        getRemoteMovies(context)
     }
 
 
-    override fun sortMovies(spinnerIndex: Int) {
+    override fun sortMovies(context: Context, spinnerIndex: Int) {
         PageObject.resetPage()
 
         val sortByOption = when(spinnerIndex){
@@ -144,7 +162,7 @@ class MoviesPresenter: MoviesContract.Presenter {
         }
 
         SortObject.currentSortOrder = sortByOption
-        getRemoteMovies()
+        getRemoteMovies(context)
     }
 
     override fun setFavoriteMovieAction(movie: Movie, favoriteIcon: AppCompatImageView) {
@@ -173,10 +191,27 @@ class MoviesPresenter: MoviesContract.Presenter {
             })
     }
 
-    override fun checkListScroll(canScroll: Boolean) {
+    override fun checkListScroll(context: Context, canScroll: Boolean) {
         if(!canScroll){
             PageObject.setNextPage()
-            getRemoteMovies()
+            getRemoteMovies(context)
+        }
+    }
+
+    private fun setupListActions(emptyList: Boolean){
+        if(emptyList){
+            view.showEmptyListWarning()
+        }else{
+            view.showList()
+        }
+    }
+
+    private fun checkConnectionStatus(context: Context){
+        if(NetworkStatusObject.isNetworkAvailable(context)) {
+            view.hideNetworkUnavailableWarning()
+            view.showEmptyListWarning()
+        }else{
+            view.showNetworkUnavailableWarning()
         }
     }
 }

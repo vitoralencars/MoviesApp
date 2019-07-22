@@ -14,4 +14,22 @@
         <item name="colorControlActivated">@color/lightRed</item>
     </style>
 
+    <style name="FillButtonStyle">
+        <item name="android:layout_height">40dp</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:background">@drawable/bg_fill_button</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">@dimen/font_small</item>
+        <item name="android:padding">4dp</item>
+    </style>
+
+    <style name="ClearButtonStyle">
+        <item name="android:layout_height">40dp</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:background">@drawable/bg_clear_button</item>
+        <item name="android:textColor">@color/lightRed</item>
+        <item name="android:textSize">@dimen/font_small</item>
+        <item name="android:padding">4dp</item>
+    </style>
+
 </resources>

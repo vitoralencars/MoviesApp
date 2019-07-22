@@ -8,13 +8,13 @@ import android.view.ViewGroup
 import com.vitor.moviesapp.R
 import com.vitor.moviesapp.database.FavoriteMoviesObject
 import com.vitor.moviesapp.model.Movie
-import com.vitor.moviesapp.ui.MoviesActivity
+import com.vitor.moviesapp.ui.activity.movieslist.MoviesListActivity
 import com.vitor.moviesapp.util.NetworkConstants
 import com.vitor.moviesapp.util.loadImage
 import kotlinx.android.synthetic.main.item_movie.view.*
 
-class MoviesAdapter(private val activity: MoviesActivity)
-    : RecyclerView.Adapter<MoviesAdapter.ViewHolder>() {
+class MoviesListAdapter(private val activity: MoviesListActivity)
+    : RecyclerView.Adapter<MoviesListAdapter.ViewHolder>() {
 
     private var remoteMovies: List<Movie> = emptyList()
 

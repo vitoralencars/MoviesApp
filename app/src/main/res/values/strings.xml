@@ -3,19 +3,27 @@
 
     <!--UTIL-->
     <string name="parentheses_style">(%s)</string>
-    
+
     <!--MOVIES COMMON-->
     <string name="movies_commom_adult_warning">+18</string>
+    <string name="empty_movies_list">Nenhum filme encontrado.</string>
 
     <!--MOVIES LIST-->
     <string name="menu_search_title">Pesquisar</string>
     <string name="menu_favorites_title">Favoritos</string>
     <string name="movies_sort_by_indicator">Ordenar por</string>
+    <string name="movies_network_unavailable">Não foi possível estabelecer uma conexão, mas você ainda pode acessar seus filmes favoritos.</string>
+    <string name="movies_button_access_favorite">Acessar favoritos</string>
     <string-array name="movies_sort_by_options">
         <item>Popularidade</item>
         <item>Lançamento</item>
         <item>Nota média</item>
         <item>Votos</item>
     </string-array>
+
+    <!--FAVORITES-->
+    <string name="favorites_info">Favoritos</string>
+    <string name="favorites_button_remove">Remover</string>
+    <string name="favorites_button_details">Ver Detalhes</string>
 
 </resources>
