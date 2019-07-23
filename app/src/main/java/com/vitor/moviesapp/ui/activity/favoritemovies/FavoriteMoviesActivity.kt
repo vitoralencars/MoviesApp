@@ -9,9 +9,9 @@ import com.vitor.moviesapp.database.FavoriteMoviesObject
 import com.vitor.moviesapp.model.Movie
 import com.vitor.moviesapp.ui.adapter.FavoriteMoviesAdapter
 import com.vitor.moviesapp.ui.adapter.GenresAdapter
-import com.vitor.moviesapp.util.DateUtils
-import com.vitor.moviesapp.util.NetworkConstants
-import com.vitor.moviesapp.util.loadImage
+import com.vitor.moviesapp.util.datautil.DateUtils
+import com.vitor.moviesapp.util.constant.NetworkConstants
+import com.vitor.moviesapp.util.viewutil.loadImage
 import kotlinx.android.synthetic.main.activity_favorite_movies.*
 import kotlinx.android.synthetic.main.content_favorite_movies.*
 import kotlinx.android.synthetic.main.view_empty_list_warning.*
@@ -30,6 +30,11 @@ class FavoriteMoviesActivity : BaseActivity(), FavoriteMoviesContract.View {
         setLayoutReference(R.layout.activity_favorite_movies)
         setupRecyclerView()
         setupPresenter()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        presenter.dispose()
     }
 
     private fun setupRecyclerView() {

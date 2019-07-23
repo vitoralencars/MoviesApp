@@ -4,8 +4,8 @@ import android.arch.persistence.room.Entity
 import android.arch.persistence.room.PrimaryKey
 import android.arch.persistence.room.TypeConverters
 import com.google.gson.annotations.SerializedName
-import com.vitor.moviesapp.util.DataBaseConstants
-import com.vitor.moviesapp.util.LongConverter
+import com.vitor.moviesapp.util.constant.DataBaseConstants
+import com.vitor.moviesapp.util.converter.LongConverter
 
 data class SearchApiResponse(
     @SerializedName("page")

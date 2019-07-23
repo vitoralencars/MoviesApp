@@ -10,6 +10,7 @@ open class BaseContract {
 
     interface BasePresenter<in T>{
         fun attachView(view: T)
+        fun dispose()
     }
 
 }

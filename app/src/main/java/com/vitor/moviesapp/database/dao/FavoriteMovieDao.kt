@@ -5,7 +5,7 @@ import android.arch.persistence.room.Delete
 import android.arch.persistence.room.Insert
 import android.arch.persistence.room.Query
 import com.vitor.moviesapp.model.Movie
-import com.vitor.moviesapp.util.DataBaseConstants
+import com.vitor.moviesapp.util.constant.DataBaseConstants
 import io.reactivex.Single
 
 @Dao

@@ -1,4 +1,4 @@
-package com.vitor.moviesapp.util
+package com.vitor.moviesapp.util.listener
 
 interface RecyclerViewOnClickListener {
 

@@ -1,4 +1,4 @@
-package com.vitor.moviesapp.util
+package com.vitor.moviesapp.util.viewutil
 
 import android.widget.ImageView
 import com.bumptech.glide.Glide

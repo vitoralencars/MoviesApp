@@ -12,22 +12,32 @@ import com.vitor.moviesapp.network.service.DiscoverService
 import com.vitor.moviesapp.network.service.GenreService
 import com.vitor.moviesapp.network.service.SearchService
 import com.vitor.moviesapp.util.*
+import com.vitor.moviesapp.util.constant.LanguageConstants
+import com.vitor.moviesapp.util.constant.NetworkConstants
+import com.vitor.moviesapp.util.datautil.GenreUtils
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 
 @SuppressLint("CheckResult")
 class MoviesListPresenter: MoviesListContract.Presenter {
 
-    lateinit var view: MoviesListContract.View
+    private lateinit var view: MoviesListContract.View
 
-    lateinit var discoverService: DiscoverService
-    lateinit var genreService: GenreService
-    lateinit var searchService: SearchService
+    private lateinit var discoverService: DiscoverService
+    private lateinit var genreService: GenreService
+    private lateinit var searchService: SearchService
 
-    lateinit var dataBase: AppDataBase
+    private lateinit var dataBase: AppDataBase
+
+    private val compositeDisposable = CompositeDisposable()
 
     override fun attachView(view: MoviesListContract.View) {
         this.view = view
+    }
+
+    override fun dispose() {
+        compositeDisposable.dispose()
     }
 
     override fun attachServices(discoverService: DiscoverService, genreService: GenreService, searchService: SearchService) {
@@ -46,33 +56,34 @@ class MoviesListPresenter: MoviesListContract.Presenter {
                 view.clearRemoteMoviesArray()
                 view.showProgressBar()
             }
-            discoverService.getMovies(
-                NetworkConstants.API_KEY,
-                SortObject.currentSortOrder,
-                PageObject.currentPage,
-                LanguageConstants.PT_BR,
-                true,
-                100
+            compositeDisposable.add(discoverService.getMovies(
+                    NetworkConstants.API_KEY,
+                    SortObject.currentSortOrder,
+                    PageObject.currentPage,
+                    LanguageConstants.PT_BR,
+                    true,
+                    100
+                )
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe({
+                        PageObject.maxPages = it.totalPages
+                        view.hideNetworkUnavailableWarning()
+                        view.listRemoteMovies(it.results)
+                        view.hideProgressBar()
+
+                        setupListActions(it.results.isEmpty())
+
+                    }, {
+                        view.hideProgressBar()
+                        checkConnectionStatus(context)
+                    })
             )
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({
-                    PageObject.maxPages = it.totalPages
-                    view.hideNetworkUnavailableWarning()
-                    view.listRemoteMovies(it.results)
-                    view.hideProgressBar()
-
-                    setupListActions(it.results.isEmpty())
-
-                }, {
-                    view.hideProgressBar()
-                    checkConnectionStatus(context)
-                })
         }
     }
 
     override fun getFavoriteMovies() {
-        dataBase.favoriteMovieDao().getFavoriteMovies()
+        compositeDisposable.add(dataBase.favoriteMovieDao().getFavoriteMovies()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe ({
@@ -81,10 +92,11 @@ class MoviesListPresenter: MoviesListContract.Presenter {
             },{
 
             })
+        )
     }
 
     override fun getGenres() {
-        genreService.getGenres(NetworkConstants.API_KEY, LanguageConstants.PT_BR)
+        compositeDisposable.add(genreService.getGenres(NetworkConstants.API_KEY, LanguageConstants.PT_BR)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
@@ -92,6 +104,7 @@ class MoviesListPresenter: MoviesListContract.Presenter {
             },{
 
             })
+        )
     }
 
     override fun getMovieGenres(movie: Movie): ArrayList<Genre>{
@@ -122,24 +135,25 @@ class MoviesListPresenter: MoviesListContract.Presenter {
                 view.clearRemoteMoviesArray()
                 view.showProgressBar()
             }
-            searchService.searchByQuery(
-                NetworkConstants.API_KEY,
-                LanguageConstants.PT_BR, query,
-                PageObject.currentPage,
-                true
+            compositeDisposable.add(searchService.searchByQuery(
+                    NetworkConstants.API_KEY,
+                    LanguageConstants.PT_BR, query,
+                    PageObject.currentPage,
+                    true
+                )
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe({
+                        PageObject.maxPages = it.totalPages
+                        view.hideNetworkUnavailableWarning()
+                        view.listRemoteMovies(it.results)
+                        view.hideProgressBar()
+                        setupListActions(it.results.isEmpty())
+                    }, {
+                        view.hideProgressBar()
+                        checkConnectionStatus(context)
+                    })
             )
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({
-                    PageObject.maxPages = it.totalPages
-                    view.hideNetworkUnavailableWarning()
-                    view.listRemoteMovies(it.results)
-                    view.hideProgressBar()
-                    setupListActions(it.results.isEmpty())
-                }, {
-                    view.hideProgressBar()
-                    checkConnectionStatus(context)
-                })
 
         }
     }
@@ -166,7 +180,7 @@ class MoviesListPresenter: MoviesListContract.Presenter {
     }
 
     override fun setFavoriteMovieAction(movie: Movie, favoriteIcon: AppCompatImageView) {
-        dataBase.favoriteMovieDao().getFavoriteMovieById(movie.id)
+        compositeDisposable.add(dataBase.favoriteMovieDao().getFavoriteMovieById(movie.id)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
@@ -178,10 +192,11 @@ class MoviesListPresenter: MoviesListContract.Presenter {
                 view.checkFavoriteIcon(favoriteIcon)
                 view.reloadMoviesList()
             })
+        )
     }
 
     override fun checkIsFavoriteMovie(movie: Movie, favoriteIcon: AppCompatImageView) {
-        dataBase.favoriteMovieDao().getFavoriteMovieById(movie.id)
+        compositeDisposable.add(dataBase.favoriteMovieDao().getFavoriteMovieById(movie.id)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
@@ -189,6 +204,7 @@ class MoviesListPresenter: MoviesListContract.Presenter {
             },{
                 view.unCheckFavoriteIcon(favoriteIcon)
             })
+        )
     }
 
     override fun checkListScroll(context: Context, canScroll: Boolean) {

@@ -1,131 +1,160 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                                             xmlns:app="http://schemas.android.com/apk/res-auto"
-                                             xmlns:tools="http://schemas.android.com/tools"
-                                             android:id="@+id/view_movie_details"
-                                             android:layout_width="match_parent"
-                                             android:layout_height="match_parent"
-                                             android:background="@color/ebony">
+<android.support.constraint.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/view_movie_details"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/ebony">
 
     <android.support.v7.widget.AppCompatImageView
+            android:id="@+id/imageView2"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:srcCompat="@drawable/ic_arrow_down"
-            android:id="@+id/imageView2"
-            android:background="#151516"
+            android:background="@color/dark"
             android:paddingTop="6dp"
             android:paddingBottom="6dp"
-            app:layout_constraintTop_toTopOf="parent" app:layout_constraintStart_toStartOf="parent"
+            app:srcCompat="@drawable/ic_arrow_down"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>
 
     <android.support.v7.widget.AppCompatImageView
+            android:id="@+id/iv_favorite_details"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:srcCompat="@drawable/ic_favorite_unchecked"
             android:background="@drawable/bg_rounded_white"
-            android:id="@+id/iv_favorite_details"
             android:padding="8dp"
-            app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginEnd="16dp"
+            app:srcCompat="@drawable/ic_favorite_unchecked"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/imageView2"
             app:layout_constraintBottom_toBottomOf="@+id/imageView2"/>
 
     <android.support.v7.widget.AppCompatImageView
+            android:id="@+id/iv_poster_details"
             android:layout_width="150dp"
             android:layout_height="220dp"
             android:scaleType="fitXY"
+            android:layout_marginTop="24dp"
+            android:layout_marginStart="16dp"
             app:srcCompat="@mipmap/ic_launcher"
-            android:id="@+id/iv_poster_details"
-            app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toBottomOf="@+id/imageView2"
-            android:layout_marginTop="24dp" android:layout_marginStart="16dp"/>
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imageView2"/>
 
     <android.support.v7.widget.AppCompatTextView
             android:id="@+id/tv_title_details"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
             android:textColor="@color/white"
             android:textStyle="bold"
             android:textSize="@dimen/font_large"
             android:textAlignment="center"
             app:layout_constraintVertical_chainStyle="packed"
             app:layout_constraintBottom_toTopOf="@+id/tv_release_year_details"
-            app:layout_constraintStart_toEndOf="@+id/iv_poster_details" app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginStart="16dp" android:layout_marginEnd="16dp"
+            app:layout_constraintStart_toEndOf="@+id/iv_poster_details"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/iv_poster_details"/>
 
     <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/tv_release_year_details"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:id="@+id/tv_release_year_details"
+            android:layout_marginTop="2dp"
             android:textSize="@dimen/font_small"
             android:textColor="@color/white"
             android:textStyle="bold"
             android:textAlignment="center"
             app:layout_constraintTop_toBottomOf="@+id/tv_title_details"
             app:layout_constraintBottom_toTopOf="@+id/rating_bar_details"
-            app:layout_constraintStart_toEndOf="@+id/iv_poster_details" app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginTop="2dp"/>
+            app:layout_constraintStart_toEndOf="@+id/iv_poster_details"
+            app:layout_constraintEnd_toEndOf="parent"/>
 
     <android.support.v7.widget.AppCompatRatingBar
             style="?android:attr/ratingBarStyleSmall"
-            android:theme="@style/CustomRatingTheme"
             android:id="@+id/rating_bar_details"
+            android:theme="@style/CustomRatingTheme"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="2dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
             android:numStars="5"
             android:stepSize=".1"
             android:secondaryProgressTint="#00000000"
             app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintTop_toBottomOf="@+id/tv_release_year_details"
             app:layout_constraintBottom_toTopOf="@+id/rv_genrers_details"
-            app:layout_constraintStart_toEndOf="@+id/iv_poster_details" app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintEnd_toStartOf="@+id/tv_vote_count_details" android:layout_marginEnd="2dp"
-            android:layout_marginStart="16dp" android:layout_marginTop="8dp"/>
+            app:layout_constraintStart_toEndOf="@+id/iv_poster_details"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintEnd_toStartOf="@+id/tv_vote_count_details"/>
 
     <android.support.v7.widget.AppCompatTextView
             android:id="@+id/tv_vote_count_details"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="2dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
             android:textColor="@color/white"
             android:textSize="@dimen/font_tiny"
             app:layout_constraintTop_toBottomOf="@+id/tv_release_year_details"
-            app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toEndOf="@+id/rating_bar_details"
-            app:layout_constraintHorizontal_bias="0.5" android:layout_marginStart="2dp"
-            android:layout_marginEnd="16dp" android:layout_marginTop="8dp"
-            app:layout_constraintBottom_toTopOf="@+id/rv_genrers_details" android:layout_marginBottom="8dp"/>
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/rating_bar_details"
+            app:layout_constraintBottom_toTopOf="@+id/rv_genrers_details"
+            app:layout_constraintHorizontal_bias="0.5"/>
 
     <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_genrers_details"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:id="@+id/rv_genrers_details"
+            android:layout_marginTop="8dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
             app:layoutManager="android.support.v7.widget.GridLayoutManager"
             app:spanCount="2"
             app:layout_constraintTop_toBottomOf="@+id/rating_bar_details"
             app:layout_constraintBottom_toTopOf="@+id/tv_adult_warning_details"
-            app:layout_constraintStart_toEndOf="@+id/iv_poster_details" app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginTop="8dp" android:layout_marginStart="16dp" android:layout_marginEnd="16dp"/>
+            app:layout_constraintStart_toEndOf="@+id/iv_poster_details"
+            app:layout_constraintEnd_toEndOf="parent"/>
 
     <android.support.v7.widget.AppCompatTextView
-            android:text="@string/movies_commom_adult_warning"
+            android:id="@+id/tv_adult_warning_details"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/tv_adult_warning_details"
+            android:layout_marginEnd="16dp"
+            android:layout_marginTop="8dp"
+            android:text="@string/movies_commom_adult_warning"
             android:textSize="@dimen/font_normal"
             android:textColor="@color/lightRed"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginEnd="16dp"
             app:layout_constraintTop_toBottomOf="@+id/rv_genrers_details"
-            android:layout_marginTop="8dp" app:layout_constraintBottom_toBottomOf="@+id/iv_poster_details"
-            android:visibility="gone"/>
+            app:layout_constraintBottom_toBottomOf="@+id/iv_poster_details"/>
+
+    <android.support.constraint.Barrier
+            android:id="@+id/barrier"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:constraint_referenced_ids="rating_bar_details,tv_adult_warning_details,tv_release_year_details,tv_vote_count_details,iv_poster_details,tv_title_details,rv_genrers_details"
+            app:barrierDirection="bottom"
+            tools:layout_editor_absoluteY="731dp"/>
 
     <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/tv_overview"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:id="@+id/tv_overview"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
             android:textColor="@color/white"
             android:textSize="@dimen/font_small"
-            app:layout_constraintTop_toBottomOf="@+id/iv_poster_details" app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginTop="16dp" app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginStart="16dp" android:layout_marginEnd="16dp"/>
+            app:layout_constraintTop_toTopOf="@+id/barrier"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" app:layout_constraintHorizontal_bias="1.0"
+            android:layout_marginTop="16dp"/>
 
 </android.support.constraint.ConstraintLayout>

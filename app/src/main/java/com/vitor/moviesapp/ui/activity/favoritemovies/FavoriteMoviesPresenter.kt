@@ -5,8 +5,9 @@ import com.sothree.slidinguppanel.SlidingUpPanelLayout
 import com.vitor.moviesapp.database.AppDataBase
 import com.vitor.moviesapp.model.Genre
 import com.vitor.moviesapp.model.Movie
-import com.vitor.moviesapp.util.GenreUtils
+import com.vitor.moviesapp.util.datautil.GenreUtils
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 
 @SuppressLint("CheckResult")
@@ -16,8 +17,14 @@ class FavoriteMoviesPresenter: FavoriteMoviesContract.Presenter {
 
     lateinit var dataBase: AppDataBase
 
+    private val compositeDisposable = CompositeDisposable()
+
     override fun attachView(view: FavoriteMoviesContract.View) {
         this.view = view
+    }
+
+    override fun dispose() {
+        compositeDisposable.dispose()
     }
 
     override fun attachDataBase(dataBase: AppDataBase) {
@@ -26,7 +33,7 @@ class FavoriteMoviesPresenter: FavoriteMoviesContract.Presenter {
 
     override fun getFavoriteMovies() {
         view.showProgressBar()
-        dataBase.favoriteMovieDao().getFavoriteMovies()
+        compositeDisposable.add(dataBase.favoriteMovieDao().getFavoriteMovies()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe ({
@@ -43,6 +50,7 @@ class FavoriteMoviesPresenter: FavoriteMoviesContract.Presenter {
                 view.hideProgressBar()
                 view.showEmptyListWarning()
             })
+        )
     }
 
     override fun getMovieGenres(movie: Movie): List<Genre> {

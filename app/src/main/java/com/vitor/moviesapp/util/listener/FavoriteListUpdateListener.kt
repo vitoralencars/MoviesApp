@@ -1,4 +1,4 @@
-package com.vitor.moviesapp.util
+package com.vitor.moviesapp.util.listener
 
 import android.support.v7.widget.AppCompatImageView
 import com.vitor.moviesapp.model.Movie

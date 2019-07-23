@@ -9,8 +9,8 @@ import com.vitor.moviesapp.R
 import com.vitor.moviesapp.database.FavoriteMoviesObject
 import com.vitor.moviesapp.model.Movie
 import com.vitor.moviesapp.ui.activity.movieslist.MoviesListActivity
-import com.vitor.moviesapp.util.NetworkConstants
-import com.vitor.moviesapp.util.loadImage
+import com.vitor.moviesapp.util.constant.NetworkConstants
+import com.vitor.moviesapp.util.viewutil.loadImage
 import kotlinx.android.synthetic.main.item_movie.view.*
 
 class MoviesListAdapter(private val activity: MoviesListActivity)

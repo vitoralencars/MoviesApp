@@ -1,7 +1,7 @@
 package com.vitor.moviesapp.network.service
 
 import com.vitor.moviesapp.model.GenreApiResponse
-import com.vitor.moviesapp.util.NetworkConstants
+import com.vitor.moviesapp.util.constant.NetworkConstants
 import io.reactivex.Observable
 import retrofit2.http.GET
 import retrofit2.http.Query

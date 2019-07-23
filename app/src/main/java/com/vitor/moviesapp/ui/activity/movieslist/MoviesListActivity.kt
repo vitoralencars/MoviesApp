@@ -23,14 +23,20 @@ import com.vitor.moviesapp.network.service.SearchService
 import com.vitor.moviesapp.ui.activity.favoritemovies.FavoriteMoviesActivity
 import com.vitor.moviesapp.ui.adapter.GenresAdapter
 import com.vitor.moviesapp.ui.adapter.MoviesListAdapter
-import com.vitor.moviesapp.util.*
+import com.vitor.moviesapp.util.constant.NetworkConstants
+import com.vitor.moviesapp.util.datautil.DateUtils
+import com.vitor.moviesapp.util.listener.FavoriteListUpdateListener
+import com.vitor.moviesapp.util.listener.RecyclerViewOnClickListener
+import com.vitor.moviesapp.util.viewutil.loadImage
 import kotlinx.android.synthetic.main.activity_movies_list.*
 import kotlinx.android.synthetic.main.content_movies_list.*
 import kotlinx.android.synthetic.main.view_empty_list_warning.*
 import kotlinx.android.synthetic.main.view_movie_details.*
 import org.koin.android.ext.android.inject
 
-class MoviesListActivity : BaseActivity(), MoviesListContract.View, RecyclerViewOnClickListener, FavoriteListUpdateListener{
+class MoviesListActivity : BaseActivity(), MoviesListContract.View,
+    RecyclerViewOnClickListener,
+    FavoriteListUpdateListener {
     private val presenter: MoviesListContract.Presenter by inject()
     private val discoverService: DiscoverService by inject()
     private val genreService: GenreService by inject()
@@ -52,6 +58,11 @@ class MoviesListActivity : BaseActivity(), MoviesListContract.View, RecyclerView
     override fun onResume() {
         super.onResume()
         moviesListAdapter.notifyDataSetChanged()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        presenter.dispose()
     }
 
     private fun setupSortSpinner(){

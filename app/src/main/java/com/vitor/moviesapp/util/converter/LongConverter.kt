@@ -1,4 +1,4 @@
-package com.vitor.moviesapp.util
+package com.vitor.moviesapp.util.converter
 
 import android.arch.persistence.room.TypeConverter
 import com.google.gson.Gson

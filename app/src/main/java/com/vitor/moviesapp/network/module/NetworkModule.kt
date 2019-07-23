@@ -5,7 +5,7 @@ import com.google.gson.GsonBuilder
 import com.vitor.moviesapp.network.service.DiscoverService
 import com.vitor.moviesapp.network.service.GenreService
 import com.vitor.moviesapp.network.service.SearchService
-import com.vitor.moviesapp.util.NetworkConstants
+import com.vitor.moviesapp.util.constant.NetworkConstants
 import okhttp3.OkHttpClient
 import org.koin.dsl.module
 import retrofit2.Retrofit

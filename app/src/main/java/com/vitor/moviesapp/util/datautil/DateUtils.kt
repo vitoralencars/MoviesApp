@@ -1,4 +1,4 @@
-package com.vitor.moviesapp.util
+package com.vitor.moviesapp.util.datautil
 
 import android.annotation.SuppressLint
 import java.text.SimpleDateFormat
